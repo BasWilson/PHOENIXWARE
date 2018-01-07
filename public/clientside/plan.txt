@@ -1,0 +1,2 @@
+Player klikt search, wanneer de que volzit (2/2) dan emit socket dat en geeft het de
+players een accept knop. Onclick op accept knop 
