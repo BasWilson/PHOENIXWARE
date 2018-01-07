@@ -15,4 +15,7 @@ $(function() {
 	$("#triggerBtn").click(function() {
 		trigger();
 	});
+	$("#faceit_eseaBtn").click(function() {
+		faceit_esea();
+	});
 });

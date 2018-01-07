@@ -8,7 +8,9 @@ var memory = require('memoryjs'),
     app = express(),
     http = require('http').Server(app),
     io = require('socket.io')(http),
-    path = require('path');
+    path = require('path'),
+	robot = require("robotjs");
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -30,9 +32,8 @@ var offset = {
 
 var clientDLL_base, engineDLL_base, clientModule, engineModule;
 
-
-//Toggle buttons
 var toggle = {
+  faceit_esea: false,
   injected: false,
   flash: false,
   radar: false,
@@ -56,8 +57,6 @@ function inject() {
       console.log(processObject.szExeFile + " found, starting Injection");
       clientDLL_base = clientModule.modBaseAddr;
       toggle.injected = true;
-      console.log(clientDLL_base);
-      console.log("Injected PHOENIXWARE LEGIT CHEAT, ENJOY ;)");
       io.emit('injected', toggle);
 
 //    engineModule = memory.findModule("engine.dll", processObject.th32ProcessID);
@@ -76,7 +75,6 @@ function noFlash() {
 
   var dwlocalPlayer = memory.readMemory(clientDLL_base + offset.dwlocalPlayer, "int");
   var flashMaxAlpha = memory.readMemory(dwlocalPlayer + offset.flashMaxAlpha, "float");
-  console.log(dwlocalPlayer);
 
   if (flashMaxAlpha > 0.0) {
     memory.writeMemory(dwlocalPlayer + offset.flashMaxAlpha, 0.0, "float");
@@ -102,9 +100,8 @@ function trigger() {
   var iEntityTeam = memory.readMemory(dwEntity + offset.iTeamNum,"int"); //66772588
 
   if (LocalPlayerTeam != iEntityTeam && iEntityHealth > 0 && iCrosshair >= 1 && iCrosshair < 65){
-
-      if (keyboard.getAsyncKeyState(0x04)){
-          sleep.usleep(20);
+      if (keyboard.getAsyncKeyState(0x12)){
+          sleep.usleep(5);
           memory.writeMemory(clientDLL_base + offset.forceAttack, 5, "int");
           sleep.usleep(5);
           if(!keyboard.getAsyncKeyState(0x01))
@@ -113,6 +110,12 @@ function trigger() {
   }
 }
 
+/*
+if (toggle.faceit_esea == true) {
+  sleep.usleep(5);
+  robot.mouseClick();
+  console.log('faceit mode');
+*/
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CHEAT TOGGLE FUNCTIONS
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -216,6 +219,16 @@ io.on('connection', function(socket){
       disableTrigger();
     }
   });
+
+    socket.on('faceit_esea', function() {
+    if (toggle.faceit_esea == false) {
+      toggle.faceit_esea = true;
+    }
+    else {
+      toggle.faceit_esea = false;
+    }
+  });
+
   socket.on('inject', function () {
     if (toggle.injected == false) {
       inject();

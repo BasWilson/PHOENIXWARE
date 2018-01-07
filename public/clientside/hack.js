@@ -16,7 +16,9 @@ function inject() {
 function trigger() {
     socket.emit('trigger');
 }
-
+function faceit_esea() {
+    socket.emit('faceit_esea');
+}
 socket.on('injected', function (toggle) {
   if (toggle.injected == true) {
     $("#output").text("PHOENIXWARE Has been injected into CS:GO");
@@ -49,6 +51,11 @@ socket.on('status', function (toggle) {
     $("#triggerBtn").addClass( "enabled" );
   } else {
     $("#triggerBtn").removeClass( "enabled" );
+  }
+  if (toggle.faceit_esea == true) {
+    $("#faceit_eseaBtn").addClass( "enabled" );
+  } else {
+    $("#faceit_eseaBtn").removeClass( "enabled" );
   }
 });
 
