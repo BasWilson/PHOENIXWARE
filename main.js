@@ -129,6 +129,18 @@ if (toggle.faceit_esea == true) {
 // CHEAT TOGGLE FUNCTIONS
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+function enableClantag() {
+
+    clantagInterval = setInterval(function(){
+      if (toggle.clan = true) {
+        clanTag();
+      }
+    },20);
+}
+
+function disableClantag() {
+  clearInterval(clantagInterval);
+}
 function enableNoFlash() {
 
     flashInterval = setInterval(function(){
@@ -196,6 +208,17 @@ io.on('connection', function(socket){
   });
 
   //TOGGLES
+
+  socket.on('clan', function() {
+    if (toggle.clan == false) {
+      toggle.clan = true;
+      enableClantag();
+    }
+    else {
+      toggle.clan = false;
+      disableClantag();
+    }
+  });
   socket.on('flash', function() {
     if (toggle.flash == false) {
       toggle.flash = true;

@@ -18,4 +18,7 @@ $(function() {
 	$("#faceit_eseaBtn").click(function() {
 		faceit_esea();
 	});
+	$("#clanBtn").click(function() {
+		clantag();
+	});
 });
