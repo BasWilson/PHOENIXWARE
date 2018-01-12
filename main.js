@@ -77,8 +77,9 @@ function inject() {
 function clanTag() {
 
         var clantagBase = memory.readMemory(engineDLL_base + offset.clanTag, "string");
+        var clanEngine = String.fromCharCode(clantagBase);
         var clan_name = "PHOENIXWARE.XYZ";
-        console.log(clantagBase);
+        console.log(clanEngine);
         memory.writeMemory(clantagBase, clan_name, "float");
 
 }
