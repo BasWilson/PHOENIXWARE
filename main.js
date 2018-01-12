@@ -27,7 +27,8 @@ var offset = {
   iCrosshair: 0x0000B2A4,
   iTeamNum: 0x000000F0,
   Ihealth: 0xFC,
-  forceAttack: 0x02EBB25C
+  forceAttack: 0x02EBB25C,
+  clan: 0x4164
 };
 
 var clientDLL_base, engineDLL_base, clientModule, engineModule;
@@ -37,7 +38,8 @@ var toggle = {
   injected: false,
   flash: false,
   radar: false,
-  trigger: false
+  trigger: false,
+  clan: false
 };
 
 var flashInterval;
@@ -59,8 +61,9 @@ function inject() {
       toggle.injected = true;
       io.emit('injected', toggle);
 
-//    engineModule = memory.findModule("engine.dll", processObject.th32ProcessID);
-//    engineDLL_base = engineModule.modBaseAddr;
+     engineModule = memory.findModule("engine.dll", processObject.th32ProcessID);
+     engineDLL_base = engineModule.modBaseAddr;
+     console.log("engine.dll found");
 
   };
 }
@@ -70,6 +73,12 @@ function inject() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CHEAT FUNCTIONS
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function clanTag() {
+
+        var clantagBase = memory.readMemory(engineDLL_base + offset.clanTag, "string");
+        console.log(clantagBase);
+}
 
 function noFlash() {
 
